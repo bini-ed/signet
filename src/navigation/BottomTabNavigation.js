@@ -12,6 +12,7 @@ import VerifyScreen from '../screens/VerifyScreen';
 import VerifyNavigation from './VerifyNavigation';
 import CommunityScreen from '../screens/CommunityScreen';
 import CommunityNavigation from './CommunityNavigation';
+import ProfileNavigation from './ProfileNavigation';
 
 const Bottom = createBottomTabNavigator();
 
@@ -65,9 +66,9 @@ const BottomTabNavigation = () => {
         }}
         component={People}></Bottom.Screen>
       <Bottom.Screen
-        name="Profile"
-        options={{headerSHown: false}}
-        component={LandingPage}></Bottom.Screen>
+        name="ProfileNav"
+        options={{headerShown: false, title: 'Profile'}}
+        component={ProfileNavigation}></Bottom.Screen>
     </Bottom.Navigator>
   );
 };

@@ -19,6 +19,7 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 
 import BottomTabNavigation from './src/navigation/BottomTabNavigation';
+import EditProfile from './src/screens/EditProfile';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';

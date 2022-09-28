@@ -111,6 +111,7 @@ const DetailScreen = () => {
         <AppButton
           title="TRANSFER OWNERSHIP"
           text={styles.viewTxt}
+          onPress={() => navigation.navigate('Transfer')}
           style={styles.appButtonView}></AppButton>
       </View>
     </ScrollView>

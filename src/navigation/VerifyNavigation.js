@@ -3,6 +3,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import VerifyScreen from '../screens/VerifyScreen';
 import DetailScreen from '../screens/DetailScreen';
+import TransferScreen from '../screens/TransferScreen';
 
 const Stack = createStackNavigator();
 const VerifyNavigation = () => {
@@ -16,6 +17,10 @@ const VerifyNavigation = () => {
         name="Detail"
         options={{headerShown: false}}
         component={DetailScreen}></Stack.Screen>
+      <Stack.Screen
+        name="Transfer"
+        options={{headerShown: false}}
+        component={TransferScreen}></Stack.Screen>
     </Stack.Navigator>
   );
 };
