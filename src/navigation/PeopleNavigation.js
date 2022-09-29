@@ -1,23 +1,24 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import CommunityScreen from '../screens/CommunityScreen';
-import AddPost from '../screens/AddPost';
+import PeopleScreen from '../screens/PeopleScreen';
+import PeopleDetailScreen from '../screens/PeopleDetailScreen';
 
-const CommunityNavigation = () => {
-  const Stack = createStackNavigator();
+const Stack = createStackNavigator();
+
+const PeopleNavigation = () => {
   return (
     <Stack.Navigator screenOptions={{presentation: 'modal'}}>
       <Stack.Screen
-        name="community"
-        component={CommunityScreen}
+        name="People"
+        component={PeopleScreen}
         options={{headerShown: false}}></Stack.Screen>
       <Stack.Screen
-        name="AddPost"
-        component={AddPost}
+        name="PeopleDetail"
+        component={PeopleDetailScreen}
         options={{headerShown: false}}></Stack.Screen>
     </Stack.Navigator>
   );
 };
 
-export default CommunityNavigation;
+export default PeopleNavigation;

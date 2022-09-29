@@ -1,11 +1,22 @@
-import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
-import Color from '../utils/colors';
-import Header from '../components/Header';
-import Logo from '../assets/SignetTagsLogo.png';
-import colors from '../utils/colors';
 
-const People = () => {
+import AppText from '../components/AppText';
+import Header from '../components/Header';
+import colors from '../utils/colors';
+import Logo from '../assets/SignetTagsLogo.png';
+import Woman from '../assets/woman.png';
+import {useNavigation} from '@react-navigation/native';
+
+const PeopleScreen = () => {
+  const {navigate} = useNavigation();
   return (
     <View style={styles.container}>
       <Header>
@@ -16,21 +27,37 @@ const People = () => {
       <TextInput
         style={styles.textInput}
         placeholder="Search People"></TextInput>
+      <View style={styles.assetContainer}>
+        <AppText style={styles.text}>ASSET OWNER</AppText>
+        <TouchableOpacity
+          onPress={() => navigate('PeopleDetail', {name: 'bugulu'})}>
+          <Image source={Woman}></Image>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
-export default People;
+export default PeopleScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Color.appBackground,
+    backgroundColor: colors.appBackground,
     paddingHorizontal: 20,
   },
   textInput: {
     height: 59,
     backgroundColor: colors.box,
     borderRadius: 7,
+  },
+  assetContainer: {
+    marginVertical: 10,
+  },
+  text: {
+    color: '#908F95',
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 24,
   },
 });

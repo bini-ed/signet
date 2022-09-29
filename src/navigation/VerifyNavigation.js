@@ -4,11 +4,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import VerifyScreen from '../screens/VerifyScreen';
 import DetailScreen from '../screens/DetailScreen';
 import TransferScreen from '../screens/TransferScreen';
+import RefernceScreen from '../screens/RefernceScreen';
 
 const Stack = createStackNavigator();
 const VerifyNavigation = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{presentation: 'modal'}}>
       <Stack.Screen
         name="Verify"
         options={{headerShown: false}}
@@ -21,6 +22,10 @@ const VerifyNavigation = () => {
         name="Transfer"
         options={{headerShown: false}}
         component={TransferScreen}></Stack.Screen>
+      <Stack.Screen
+        name="Refernce"
+        options={{headerShown: false}}
+        component={RefernceScreen}></Stack.Screen>
     </Stack.Navigator>
   );
 };

@@ -20,6 +20,8 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 import EditProfile from './src/screens/EditProfile';
+import colors from './src/utils/colors';
+import RefernceScreen from './src/screens/RefernceScreen';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -27,7 +29,7 @@ const App = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NavigationContainer>
+      <NavigationContainer theme={{colors: {background: colors.appBackground}}}>
         <BottomTabNavigation />
       </NavigationContainer>
     </SafeAreaView>
@@ -37,7 +39,7 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: colors.appBackground,
   },
 });
 

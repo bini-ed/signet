@@ -1,7 +1,7 @@
 import react from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import LandingPage from '../screens/LandingPage';
-import People from '../screens/PeopleScreen';
+import PeopleScreen from '../screens/PeopleScreen';
 
 import colors from '../utils/colors';
 import PeopleImg from '../assets/people.png';
@@ -13,6 +13,7 @@ import VerifyNavigation from './VerifyNavigation';
 import CommunityScreen from '../screens/CommunityScreen';
 import CommunityNavigation from './CommunityNavigation';
 import ProfileNavigation from './ProfileNavigation';
+import PeopleNavigation from './PeopleNavigation';
 
 const Bottom = createBottomTabNavigator();
 
@@ -57,14 +58,15 @@ const BottomTabNavigation = () => {
         }}
         component={CommunityNavigation}></Bottom.Screen>
       <Bottom.Screen
-        name="People"
+        name="PeopleNav"
         options={{
+          title: 'People',
           headerShown: false,
           tabBarIcon: ({color, size}) => (
             <Image style={{width: 25, height: 25}} source={PeopleImg}></Image>
           ),
         }}
-        component={People}></Bottom.Screen>
+        component={PeopleNavigation}></Bottom.Screen>
       <Bottom.Screen
         name="ProfileNav"
         options={{headerShown: false, title: 'Profile'}}

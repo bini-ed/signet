@@ -76,7 +76,8 @@ const VerifyScreen = () => {
         <AppButton
           title="VIEW ON METAVERSE"
           text={styles.viewTxt}
-          style={styles.appButtonView}></AppButton>
+          style={styles.appButtonView}
+          onPress={() => navigate('Refernce')}></AppButton>
       </View>
     </ScrollView>
   );

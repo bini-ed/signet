@@ -62,8 +62,8 @@ const DetailScreen = () => {
       </Header>
 
       <View style={styles.boxContainer}>
-        {data.map(item => (
-          <View style={styles.box}>
+        {data.map((item, index) => (
+          <View key={index} style={styles.box}>
             <AppText style={styles.nameTxt}>{item.name}</AppText>
             <AppText style={styles.numberTxt}>{item.value}</AppText>
           </View>

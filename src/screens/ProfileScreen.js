@@ -1,24 +1,34 @@
-import {Image, StyleSheet, Switch, Text, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
+import AppText from '../components/AppText';
 import colors from '../utils/colors';
 import AppButton from '../components/AppButton';
 import Profile from '../assets/profile.png';
 import Logo from '../assets/SignetTagsLogo.png';
 import Header from '../components/Header';
-import AppText from '../components/AppText';
+import Post from '../assets/post.png';
 import {useNavigation} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
+const {width} = Dimensions.get('screen');
 const ProfileScreen = () => {
   const navigation = useNavigation();
   const [hide, setHide] = useState(false);
   const [list, setList] = useState(false);
 
+  const length = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const toggleSwitchHide = () => setHide(previousState => !previousState);
   const toggleSwitchList = () => setList(previousState => !previousState);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Header>
         <View></View>
         <Image source={Logo}></Image>
@@ -59,7 +69,15 @@ const ProfileScreen = () => {
       </View>
 
       <AppText style={styles.txt}>YOUR POSTS</AppText>
-    </View>
+
+      <View style={styles.postContainer}>
+        {length.map((item, index) => (
+          <View key={index} style={styles.post}>
+            <Image source={Post} style={{width: width / 2 - 30}}></Image>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
   );
 };
 
@@ -115,5 +133,14 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 24,
     textAlign: 'center',
+  },
+  post: {
+    width: width / 2 - 30,
+    borderRadius: 7,
+    margin: 10,
+  },
+  postContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
 });

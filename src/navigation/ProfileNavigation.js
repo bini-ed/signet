@@ -7,7 +7,7 @@ import EditProfile from '../screens/EditProfile';
 const ProfileNavigation = () => {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{presentation: 'modal'}}>
       <Stack.Screen
         name="Profile"
         component={ProfileScreen}
