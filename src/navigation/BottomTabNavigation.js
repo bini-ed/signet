@@ -25,6 +25,7 @@ const BottomTabNavigation = () => {
         tabBarInactiveTintColor: 'white',
         tabBarActiveBackgroundColor: colors.bottomTab,
         tabBarInactiveBackgroundColor: colors.bottomTab,
+        tabBarHideOnKeyboard: true,
         tabBarLabelStyle: {
           paddingBottom: 2.5,
           fontSize: 14,

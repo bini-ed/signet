@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   StyleSheet,
@@ -10,26 +11,47 @@ import {
 } from 'react-native';
 import Header from '../components/Header';
 
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+
 import Back from '../assets/back.png';
 
 import colors from '../utils/colors';
 import AppText from '../components/AppText';
-import {Formik} from 'formik';
 import AppButton from '../components/AppButton';
+import transferService from '../services/transferService';
 
 const TransferScreen = () => {
   const navigation = useNavigation();
-  // const validationSchema = Yup.object().shape({
-  //   owner: Yup.string().required().label('Name'),
-  //   name: Yup.string().required().label('Name'),
-  //   address: Yup.string().required().label('Address'),
-  //   price: Yup.string().required().label('Price'),
-  //   remark: Yup.string().label('Remark'),
-  // });
+
+  const validationSchema = Yup.object().shape({
+    currentOwner: Yup.string().required().label('Current Owner'),
+    name: Yup.string().required().label('Name'),
+    address: Yup.string().required().label('Address'),
+    price: Yup.string().required().label('Price'),
+    remarks: Yup.string().label('Remark'),
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async value => {
+    setLoading(true);
+    try {
+      const {data} = await transferService(value);
+      if (data) console.log('Success', data);
+    } catch (error) {
+      if (error.response) {
+        console.log('error response', error.response.data.msg);
+      } else {
+        console.log('Error Message', error.message);
+      }
+    }
+    setLoading(false);
+  };
 
   return (
     <ScrollView
       style={styles.container}
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={{alignItems: 'center', flexGrow: 1}}>
       <Header>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -40,46 +62,50 @@ const TransferScreen = () => {
       </Header>
 
       <View style={styles.infoContainer}>
+        {loading && (
+          <ActivityIndicator
+            animating={loading}
+            size={30}
+            color={colors.button}></ActivityIndicator>
+        )}
         <AppText style={styles.text}>
           You need a Polygon wallet address to transfer the ownership details.
           This address could be found after you login to your wallet
         </AppText>
 
         <Formik
-          // initialValues={{
-          //   oldPassword: '',
-          //   newPassword: '',
-          //   confirmPassword: '',
-          //   id: authContext.user['id'],
-          // }}
-          onSubmit={values => console.log(values)}
-          // validationSchema={validationSchema}
-        >
+          initialValues={{
+            currentOwner: '',
+            name: '',
+            address: '',
+            price: '',
+            remarks: '',
+          }}
+          onSubmit={values => handleSubmit(values)}
+          validationSchema={validationSchema}>
           {({handleChange, errors, values, handleSubmit, touched}) => (
             <View style={styles.form}>
               <View>
                 <View style={styles.label}>
                   <AppText style={styles.labelText}>CURRENT OWNER</AppText>
                   <TextInput
-                    // value={values.oldPassword}
-                    secureTextEntry={true}
+                    value={values.currentOwner}
                     autoCapitalize="none"
                     autoCorrect={false}
-                    onChangeText={handleChange('owner')}
+                    onChangeText={handleChange('currentOwner')}
                     style={styles.textInput}
                   />
                 </View>
-                {touched['owner'] && (
+                {touched['currentOwner'] && (
                   <AppText style={styles.errorMessage}>
-                    {errors['owner']}
+                    {errors['currentOwner']}
                   </AppText>
                 )}
 
                 <View style={styles.label}>
                   <AppText style={styles.labelText}>NAME</AppText>
                   <TextInput
-                    // value={values.oldPassword}
-                    secureTextEntry={true}
+                    value={values.name}
                     autoCapitalize="none"
                     autoCorrect={false}
                     onChangeText={handleChange('name')}
@@ -95,8 +121,7 @@ const TransferScreen = () => {
                 <View style={styles.label}>
                   <AppText style={styles.labelText}>ADDRESS</AppText>
                   <TextInput
-                    // value={values.oldPassword}
-                    secureTextEntry={true}
+                    value={values.address}
                     autoCapitalize="none"
                     autoCorrect={false}
                     onChangeText={handleChange('address')}
@@ -112,8 +137,7 @@ const TransferScreen = () => {
                 <View style={styles.label}>
                   <AppText style={styles.labelText}>PRICE</AppText>
                   <TextInput
-                    // value={values.oldPassword}
-                    secureTextEntry={true}
+                    value={values.price}
                     autoCapitalize="none"
                     autoCorrect={false}
                     onChangeText={handleChange('price')}
@@ -129,22 +153,22 @@ const TransferScreen = () => {
                 <View style={styles.label}>
                   <AppText style={styles.labelText}>REMARK</AppText>
                   <TextInput
-                    // value={values.oldPassword}
-                    secureTextEntry={true}
+                    value={values.remarks}
                     autoCapitalize="none"
                     autoCorrect={false}
-                    onChangeText={handleChange('remark')}
+                    onChangeText={handleChange('remarks')}
                     style={styles.textInput}
                   />
                 </View>
-                {touched['remark'] && (
+                {touched['remarks'] && (
                   <AppText style={styles.errorMessage}>
-                    {errors['remark']}
+                    {errors['remarks']}
                   </AppText>
                 )}
               </View>
               <View style={styles.button}>
                 <AppButton
+                  onPress={handleSubmit}
                   title="TRANSFER OWNERSHIP"
                   text={styles.transferTxt}
                   style={styles.appButtonTransfer}></AppButton>
@@ -178,7 +202,8 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   infoContainer: {
-    width: '90%',
+    width: '100%',
+    paddingHorizontal: 20,
     alignItems: 'center',
     flex: 1,
   },
@@ -204,7 +229,6 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     height: 51,
     justifyContent: 'center',
-    width: '90%',
   },
   transferTxt: {
     color: 'black',
@@ -219,5 +243,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     marginBottom: 20,
+  },
+  errorMessage: {
+    color: colors.button,
   },
 });

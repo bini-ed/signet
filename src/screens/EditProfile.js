@@ -8,18 +8,56 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Header from '../components/Header';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
 
 import Back from '../assets/back.png';
 import Profile from '../assets/profile.png';
 
 import colors from '../utils/colors';
 import AppText from '../components/AppText';
-import {Formik} from 'formik';
 import AppButton from '../components/AppButton';
+import Header from '../components/Header';
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required().label('Name'),
+  address: Yup.string().required().label('Address'),
+  about: Yup.string().required().label('About'),
+  email: Yup.string().required().email().label('Email'),
+  wallet: Yup.string().required().label('Wallet Address'),
+  // profile: Yup.string().required().label('Profile Picture'),
+  profile: Yup.array()
+    .min(1, 'Please upload Profile Picture')
+    .label('Profile Picture'),
+});
 
 const EditProfile = () => {
   const navigation = useNavigation();
+
+  const imageGalleryLaunch = (name, setFieldValue) => {
+    let options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    launchImageLibrary(options, res => {
+      console.log('Response = ', res);
+      if (res.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (res.error) {
+        console.log('ImagePicker Error: ', res.error);
+      } else if (res.customButton) {
+        console.log('User tapped custom button: ', res.customButton);
+        alert(res.customButton);
+      } else {
+        const source = {uri: res.uri};
+        setFieldValue(name, source);
+        console.log('response', JSON.stringify(res));
+      }
+    });
+  };
   return (
     <ScrollView
       style={styles.container}
@@ -35,16 +73,24 @@ const EditProfile = () => {
 
       <View style={styles.infoContainer}>
         <Formik
-          // initialValues={{
-          //   oldPassword: '',
-          //   newPassword: '',
-          //   confirmPassword: '',
-          //   id: authContext.user['id'],
-          // }}
+          initialValues={{
+            name: '',
+            address: '',
+            about: '',
+            email: '',
+            wallet: '',
+            profile: [],
+          }}
           onSubmit={values => console.log(values)}
-          // validationSchema={validationSchema}
-        >
-          {({handleChange, errors, values, handleSubmit, touched}) => (
+          validationSchema={validationSchema}>
+          {({
+            handleChange,
+            errors,
+            values,
+            handleSubmit,
+            touched,
+            setFieldValue,
+          }) => (
             <View style={styles.form}>
               <View>
                 <TouchableOpacity
@@ -55,12 +101,33 @@ const EditProfile = () => {
                     alignSelf: 'center',
                     marginVertical: 10,
                     marginBottom: 20,
-                  }}>
-                  <Image
-                    source={Profile}
-                    style={{height: 68, width: 68}}></Image>
+                  }}
+                  onPress={() => imageGalleryLaunch('profile', setFieldValue)}>
+                  {!values.profile[0] ? (
+                    <Image
+                      source={Profile}
+                      style={{
+                        width: 68,
+                        height: 68,
+                        borderRadius: 50,
+                      }}></Image>
+                  ) : (
+                    <Image
+                      source={{uri: values.profile[0].uri}}
+                      style={{
+                        width: 68,
+                        height: 68,
+                        borderRadius: 50,
+                      }}></Image>
+                  )}
+
                   <AppText style={styles.txt}>CHANGE AVATAR</AppText>
                 </TouchableOpacity>
+                {touched['profile'] && (
+                  <AppText style={[styles.errorMessage, {textAlign: 'center'}]}>
+                    {errors['profile']}
+                  </AppText>
+                )}
 
                 <View style={styles.label}>
                   <AppText style={styles.labelText}>NAME</AppText>
@@ -149,6 +216,7 @@ const EditProfile = () => {
               </View>
               <View style={styles.button}>
                 <AppButton
+                  onPress={handleSubmit}
                   title="SAVE CHANGES"
                   text={styles.transferTxt}
                   style={styles.appButtonTransfer}></AppButton>
@@ -189,9 +257,10 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   infoContainer: {
-    width: '90%',
+    width: '100%',
     alignItems: 'center',
     flex: 1,
+    paddingHorizontal: 20,
   },
   form: {
     width: '100%',
@@ -215,7 +284,6 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     height: 51,
     justifyContent: 'center',
-    width: '90%',
   },
   transferTxt: {
     color: 'black',
@@ -230,5 +298,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     marginBottom: 20,
+  },
+  errorMessage: {
+    color: colors.button,
+    marginBottom: 10,
   },
 });

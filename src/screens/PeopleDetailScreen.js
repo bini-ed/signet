@@ -22,7 +22,8 @@ const {width} = Dimensions.get('screen');
 const PeopleDetailScreen = () => {
   const navigate = useNavigation();
   const route = useRoute();
-  const title = route.name;
+  const title = route.params.name;
+  console.log(title);
 
   const length = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -42,7 +43,7 @@ const PeopleDetailScreen = () => {
         style={{
           flex: 1,
           alignItems: 'center',
-          paddingHorizontal: 10,
+          paddingHorizontal: 20,
         }}>
         <Image source={Profile} style={{alignSelf: 'center'}}></Image>
         <AppText style={styles.text}>ABOUT</AppText>
@@ -92,6 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.appBackground,
+    // backgroundColor: 'red',
   },
   title: {
     color: 'white',
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.box,
     borderRadius: 7,
     paddingVertical: 10,
-    marginVertical: 20,
+    marginVertical: 10,
   },
   infoTxt: {
     fontSize: 16,
@@ -136,12 +138,16 @@ const styles = StyleSheet.create({
     flex: 0.6,
   },
   post: {
+    backgroundColor: colors.box,
+    marginVertical: 20,
     width: width / 2 - 30,
+    height: 106,
     borderRadius: 7,
-    margin: 10,
+    justifyContent: 'center',
   },
   postContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
 });

@@ -90,17 +90,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     backgroundColor: colors.appBackground,
+    paddingHorizontal: 20,
   },
   infoContainer: {
     display: 'flex',
     alignItems: 'center',
     width: '100%',
   },
-  logo: {
-    // width: 185,
-    // height: 185,
-    // marginTop: 10,
-  },
+
   verLogo: {
     width: 185,
     height: 185,
@@ -140,7 +137,7 @@ const styles = StyleSheet.create({
     flex: 0.4,
   },
   box: {
-    width: '90%',
+    width: '100%',
     backgroundColor: colors.box,
     borderRadius: 7,
     paddingVertical: 10,
@@ -152,7 +149,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     height: 51,
     justifyContent: 'center',
-    width: '90%',
+    width: '100%',
   },
   detailTxt: {
     color: '#D7A241',
@@ -169,7 +166,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     height: 51,
     justifyContent: 'center',
-    width: '90%',
+    width: '100%',
   },
   viewTxt: {
     color: 'black',

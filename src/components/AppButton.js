@@ -11,5 +11,7 @@ const AppButton = ({title, text, style, onPress}) => {
 
 export default AppButton;
 const styles = StyleSheet.create({
-  button: {width: '100%'},
+  button: {
+    width: '100%',
+  },
 });

@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.appBackground,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
   profileContainer: {
     flexDirection: 'row',
@@ -135,12 +135,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   post: {
+    backgroundColor: colors.box,
+    marginVertical: 20,
     width: width / 2 - 30,
+    height: 106,
     borderRadius: 7,
-    margin: 10,
+    justifyContent: 'center',
   },
   postContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
 });

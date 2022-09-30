@@ -18,7 +18,7 @@ import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
 import Header from '../components/Header';
 
-const {width} = Dimensions.get('screen');
+const {width} = Dimensions.get('window');
 
 const DetailScreen = () => {
   const navigation = useNavigation();
@@ -60,59 +60,60 @@ const DetailScreen = () => {
         <Image source={Logo} style={styles.logo}></Image>
         <View></View>
       </Header>
-
-      <View style={styles.boxContainer}>
-        {data.map((item, index) => (
-          <View key={index} style={styles.box}>
-            <AppText style={styles.nameTxt}>{item.name}</AppText>
-            <AppText style={styles.numberTxt}>{item.value}</AppText>
-          </View>
-        ))}
-      </View>
-
       <View style={styles.aboutContainer}>
-        <AppText style={styles.txt}>ABOUT</AppText>
-        <AppText style={styles.about}>
-          The photographs describes the fight of young souls seeking escape from
-          old rituals in order to build their own story and future.
-        </AppText>
+        <View style={styles.boxContainer}>
+          {data.map((item, index) => (
+            <View key={index} style={styles.box}>
+              <AppText style={styles.nameTxt}>{item.name}</AppText>
+              <AppText style={styles.numberTxt}>{item.value}</AppText>
+            </View>
+          ))}
+        </View>
 
-        <View style={styles.boxAbout}>
-          <View style={styles.infoLabel}>
-            <AppText style={styles.infoTxt}>CREATED BY</AppText>
-            <AppText style={styles.txtValue}>Distinct Cloud Labs LLP</AppText>
-          </View>
+        <View>
+          <AppText style={styles.txt}>ABOUT</AppText>
+          <AppText style={styles.about}>
+            The photographs describes the fight of young souls seeking escape
+            from old rituals in order to build their own story and future.
+          </AppText>
 
-          <View style={styles.infoLabel}>
-            <AppText style={styles.infoTxt}>OWNER</AppText>
-            <AppText style={styles.txtValue}>Manish Gautam</AppText>
-          </View>
+          <View style={styles.boxAbout}>
+            <View style={styles.infoLabel}>
+              <AppText style={styles.infoTxt}>CREATED BY</AppText>
+              <AppText style={styles.txtValue}>Distinct Cloud Labs LLP</AppText>
+            </View>
 
-          <View style={styles.infoLabel}>
-            <AppText style={styles.infoTxt}>PURCHASED ON</AppText>
-            <AppText style={styles.txtValue}>02 Apr 2022</AppText>
-          </View>
+            <View style={styles.infoLabel}>
+              <AppText style={styles.infoTxt}>OWNER</AppText>
+              <AppText style={styles.txtValue}>Manish Gautam</AppText>
+            </View>
 
-          <View style={styles.infoLabel}>
-            <AppText style={styles.infoTxt}>MANUFACTURED</AppText>
-            <AppText style={styles.txtValue}>01 Apr 2022</AppText>
-          </View>
-          <View style={styles.infoLabel}>
-            <AppText style={styles.infoTxt}>CREATED BY</AppText>
-            <AppText style={styles.txtValue}>Distinct Cloud Labs</AppText>
+            <View style={styles.infoLabel}>
+              <AppText style={styles.infoTxt}>PURCHASED ON</AppText>
+              <AppText style={styles.txtValue}>02 Apr 2022</AppText>
+            </View>
+
+            <View style={styles.infoLabel}>
+              <AppText style={styles.infoTxt}>MANUFACTURED</AppText>
+              <AppText style={styles.txtValue}>01 Apr 2022</AppText>
+            </View>
+            <View style={styles.infoLabel}>
+              <AppText style={styles.infoTxt}>CREATED BY</AppText>
+              <AppText style={styles.txtValue}>Distinct Cloud Labs</AppText>
+            </View>
           </View>
         </View>
-      </View>
-      <View style={styles.button}>
-        <AppButton
-          title="VERIFY ON POLYGON"
-          text={styles.detailTxt}
-          style={styles.appButtonDetail}></AppButton>
-        <AppButton
-          title="TRANSFER OWNERSHIP"
-          text={styles.viewTxt}
-          onPress={() => navigation.navigate('Transfer')}
-          style={styles.appButtonView}></AppButton>
+        <View style={styles.button}>
+          <AppButton
+            title="VERIFY ON POLYGON"
+            text={styles.detailTxt}
+            style={styles.appButtonDetail}></AppButton>
+          <AppButton
+            title="TRANSFER OWNERSHIP"
+            text={styles.viewTxt}
+            onPress={() => navigation.navigate('Transfer')}
+            style={styles.appButtonView}></AppButton>
+        </View>
       </View>
     </ScrollView>
   );
@@ -131,10 +132,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
   },
+  boxContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
   box: {
     backgroundColor: colors.box,
-    margin: 10,
-    width: width / 2 - 20,
+    marginVertical: 10,
+    width: width / 2 - 30,
     height: 106,
     borderRadius: 7,
     paddingLeft: 10,
@@ -155,12 +161,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     width: '90%',
   },
-  boxContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  boxAbout: {
+    backgroundColor: colors.box,
+    borderRadius: 7,
+    paddingVertical: 10,
   },
   aboutContainer: {
-    width: width - 20,
+    width: '100%',
+    paddingHorizontal: 20,
   },
   about: {
     fontSize: 16,
@@ -168,11 +176,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: colors.white,
     marginVertical: 10,
-  },
-  boxAbout: {
-    backgroundColor: colors.box,
-    borderRadius: 7,
-    paddingVertical: 10,
   },
   infoTxt: {
     fontSize: 16,
@@ -208,7 +211,6 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     height: 51,
     justifyContent: 'center',
-    width: '90%',
   },
   detailTxt: {
     color: '#D7A241',
@@ -225,7 +227,6 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     height: 51,
     justifyContent: 'center',
-    width: '90%',
   },
   viewTxt: {
     color: 'black',
