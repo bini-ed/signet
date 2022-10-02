@@ -1,33 +1,27 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-} from 'react-native';
+import {View, StyleSheet, Dimensions, Image} from 'react-native';
 import React from 'react';
-import AppButton from '../components/AppButton';
-import AppText from '../components/AppText';
+
 import Logo from '../assets/logo.png';
 
-const {width, height} = Dimensions.get('window');
+import AppButton from '../components/AppButton';
+import AppText from '../components/AppText';
+import LinearButton from '../components/LinearButton';
+
+const {width} = Dimensions.get('window');
+
 const LandingPage = () => {
   return (
     <View style={styles.container}>
       <View style={styles.logo}>
         <Image source={Logo} style={{width: 325, height: 325}}></Image>
       </View>
-
       <View style={styles.button}>
         <View style={styles.info}>
           <AppText style={styles.text}>Welcome to Signet Tags.</AppText>
           <AppText style={styles.text}>Scan a tag to get started</AppText>
         </View>
-        <AppButton
-          title="SCAN A TAG"
-          style={styles.appButtonScan}
-          text={styles.scanTxt}></AppButton>
+
+        <LinearButton text="SCAN A TAG"></LinearButton>
         <AppButton
           title="EXPLORE OUR STORE"
           style={styles.appButtonExplore}
@@ -50,20 +44,6 @@ const styles = StyleSheet.create({
   button: {
     flex: 0.3,
     width: width - 23,
-  },
-  appButtonScan: {
-    marginVertical: 21,
-    backgroundColor: '#D7A241',
-    borderColor: '#FBCE71',
-    borderWidth: 1,
-    borderRadius: 7,
-    height: 51,
-    justifyContent: 'center',
-  },
-  scanTxt: {
-    color: 'black',
-    fontSize: 16,
-    textAlign: 'center',
   },
   appButtonExplore: {
     marginVertical: 21,

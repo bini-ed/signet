@@ -3,27 +3,25 @@ import {
   Image,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 import Back from '../assets/back.png';
 import Profile from '../assets/woman.png';
 import Post from '../assets/post.png';
+
 import colors from '../utils/colors';
 import Header from '../components/Header';
 import AppText from '../components/AppText';
-
-import {useNavigation, useRoute} from '@react-navigation/native';
 
 const {width} = Dimensions.get('screen');
 const PeopleDetailScreen = () => {
   const navigate = useNavigation();
   const route = useRoute();
   const title = route.params.name;
-  console.log(title);
 
   const length = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 

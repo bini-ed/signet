@@ -7,13 +7,14 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
+
+import Logo from '../assets/SignetTagsLogo.png';
+import Woman from '../assets/woman.png';
 
 import AppText from '../components/AppText';
 import Header from '../components/Header';
 import colors from '../utils/colors';
-import Logo from '../assets/SignetTagsLogo.png';
-import Woman from '../assets/woman.png';
-import {useNavigation} from '@react-navigation/native';
 
 const PeopleScreen = () => {
   const {navigate} = useNavigation();

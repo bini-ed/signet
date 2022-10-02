@@ -17,8 +17,8 @@ import Profile from '../assets/profile.png';
 
 import colors from '../utils/colors';
 import AppText from '../components/AppText';
-import AppButton from '../components/AppButton';
 import Header from '../components/Header';
+import LinearButton from '../components/LinearButton';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label('Name'),
@@ -26,7 +26,6 @@ const validationSchema = Yup.object().shape({
   about: Yup.string().required().label('About'),
   email: Yup.string().required().email().label('Email'),
   wallet: Yup.string().required().label('Wallet Address'),
-  // profile: Yup.string().required().label('Profile Picture'),
   profile: Yup.array()
     .min(1, 'Please upload Profile Picture')
     .label('Profile Picture'),
@@ -215,11 +214,9 @@ const EditProfile = () => {
                 )}
               </View>
               <View style={styles.button}>
-                <AppButton
-                  onPress={handleSubmit}
-                  title="SAVE CHANGES"
-                  text={styles.transferTxt}
-                  style={styles.appButtonTransfer}></AppButton>
+                <LinearButton
+                  text="SAVE CHANGES"
+                  onPress={handleSubmit}></LinearButton>
               </View>
             </View>
           )}
@@ -277,22 +274,6 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     marginVertical: 10,
   },
-  appButtonTransfer: {
-    backgroundColor: '#D7A241',
-    borderColor: '#FBCE71',
-    borderWidth: 1,
-    borderRadius: 7,
-    height: 51,
-    justifyContent: 'center',
-  },
-  transferTxt: {
-    color: 'black',
-    fontSize: 16,
-    textAlign: 'center',
-    fontWeight: '400',
-    lineHeight: 24,
-  },
-
   button: {
     width: '100%',
     alignItems: 'center',

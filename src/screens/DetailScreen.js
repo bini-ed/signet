@@ -14,9 +14,11 @@ import {useNavigation} from '@react-navigation/native';
 import colors from '../utils/colors';
 import Logo from '../assets/SignetTagsLogo.png';
 import Back from '../assets/back.png';
+
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
 import Header from '../components/Header';
+import LinearButton from '../components/LinearButton';
 
 const {width} = Dimensions.get('window');
 
@@ -108,11 +110,10 @@ const DetailScreen = () => {
             title="VERIFY ON POLYGON"
             text={styles.detailTxt}
             style={styles.appButtonDetail}></AppButton>
-          <AppButton
-            title="TRANSFER OWNERSHIP"
-            text={styles.viewTxt}
-            onPress={() => navigation.navigate('Transfer')}
-            style={styles.appButtonView}></AppButton>
+
+          <LinearButton
+            text="TRANSFER OWNERSHIP"
+            onPress={() => navigation.navigate('Transfer')}></LinearButton>
         </View>
       </View>
     </ScrollView>
@@ -218,21 +219,5 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 24,
     textAlign: 'center',
-  },
-
-  appButtonView: {
-    backgroundColor: '#D7A241',
-    borderColor: '#FBCE71',
-    borderWidth: 1,
-    borderRadius: 7,
-    height: 51,
-    justifyContent: 'center',
-  },
-  viewTxt: {
-    color: 'black',
-    fontSize: 16,
-    textAlign: 'center',
-    fontWeight: '400',
-    lineHeight: 24,
   },
 });

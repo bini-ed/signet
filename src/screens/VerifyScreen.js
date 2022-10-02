@@ -7,16 +7,17 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-
-import colors from '../utils/colors';
-import AppText from '../components/AppText';
-import AppButton from '../components/AppButton';
+import {useNavigation} from '@react-navigation/native';
 
 import Logo from '../assets/SignetTagsLogo.png';
 import Verified from '../assets/tagVerified.png';
 import Cloth from '../assets/cloth.png';
-import {useNavigation} from '@react-navigation/native';
+
+import colors from '../utils/colors';
+import AppText from '../components/AppText';
+import AppButton from '../components/AppButton';
 import Header from '../components/Header';
+import LinearButton from '../components/LinearButton';
 
 const {width, height} = Dimensions.get('window');
 const VerifyScreen = () => {
@@ -73,11 +74,9 @@ const VerifyScreen = () => {
           text={styles.detailTxt}
           style={styles.appButtonDetail}
           onPress={() => navigate('Detail')}></AppButton>
-        <AppButton
-          title="VIEW ON METAVERSE"
-          text={styles.viewTxt}
-          style={styles.appButtonView}
-          onPress={() => navigate('Refernce')}></AppButton>
+        <LinearButton
+          text="VIEW ON METAVERSE"
+          onPress={() => navigate('Refernce')}></LinearButton>
       </View>
     </ScrollView>
   );
@@ -97,7 +96,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-
   verLogo: {
     width: 185,
     height: 185,
@@ -157,23 +155,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 24,
     textAlign: 'center',
-  },
-
-  appButtonView: {
-    backgroundColor: '#D7A241',
-    borderColor: '#FBCE71',
-    borderWidth: 1,
-    borderRadius: 7,
-    height: 51,
-    justifyContent: 'center',
-    width: '100%',
-  },
-  viewTxt: {
-    color: 'black',
-    fontSize: 16,
-    textAlign: 'center',
-    fontWeight: '400',
-    lineHeight: 24,
   },
   button: {
     width: '100%',

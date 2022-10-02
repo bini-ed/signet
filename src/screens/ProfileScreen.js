@@ -8,14 +8,16 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import AppText from '../components/AppText';
-import colors from '../utils/colors';
-import AppButton from '../components/AppButton';
-import Profile from '../assets/profile.png';
-import Logo from '../assets/SignetTagsLogo.png';
-import Header from '../components/Header';
-import Post from '../assets/post.png';
 import {useNavigation} from '@react-navigation/native';
+
+import Profile from '../assets/profile.png';
+import Post from '../assets/post.png';
+import Logo from '../assets/SignetTagsLogo.png';
+
+import colors from '../utils/colors';
+import AppText from '../components/AppText';
+import AppButton from '../components/AppButton';
+import Header from '../components/Header';
 
 const {width} = Dimensions.get('screen');
 const ProfileScreen = () => {

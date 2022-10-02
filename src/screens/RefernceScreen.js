@@ -1,8 +1,10 @@
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import React from 'react';
-import AppButton from '../components/AppButton';
 import {useNavigation} from '@react-navigation/native';
+
+import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
+import LinearButton from '../components/LinearButton';
 import colors from '../utils/colors';
 
 const RefernceScreen = () => {
@@ -20,13 +22,13 @@ const RefernceScreen = () => {
           style={{
             flexDirection: 'row',
             marginVertical: 10,
-            justifyContent: 'space-around',
+            justifyContent: 'space-between',
           }}>
           <AppButton
             title="EDIT PROFILE"
             onPress={() => navigation.navigate('EditProfile')}
             text={styles.detailTxt}
-            style={styles.appButtonDetail}></AppButton>
+            style={styles.appButtonEdit}></AppButton>
           <View
             style={{
               backgroundColor: colors.box,
@@ -105,10 +107,8 @@ const RefernceScreen = () => {
           text={styles.subText}
           style={styles.appButtonSub}
           onPress={() => navigate('Detail')}></AppButton>
-        <AppButton
-          title="MAIN"
-          text={styles.viewTxt}
-          style={styles.appButtonView}></AppButton>
+
+        <LinearButton text="MAIN"></LinearButton>
       </View>
     </ScrollView>
   );
@@ -119,9 +119,9 @@ export default RefernceScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
-  appButtonDetail: {
+  appButtonEdit: {
     marginVertical: 21,
     borderColor: '#D7A241',
     borderWidth: 2,
@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: 'center',
   },
-
   appButtonSub: {
     marginVertical: 21,
     borderColor: '#D7A241',
@@ -145,7 +144,6 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     height: 51,
     justifyContent: 'center',
-    width: '90%',
   },
   subText: {
     color: '#D7A241',
@@ -153,23 +151,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 24,
     textAlign: 'center',
-  },
-
-  appButtonView: {
-    backgroundColor: '#D7A241',
-    borderColor: '#FBCE71',
-    borderWidth: 1,
-    borderRadius: 7,
-    height: 51,
-    justifyContent: 'center',
-    width: '90%',
-  },
-  viewTxt: {
-    color: 'black',
-    fontSize: 16,
-    textAlign: 'center',
-    fontWeight: '400',
-    lineHeight: 24,
   },
   button: {
     width: '100%',

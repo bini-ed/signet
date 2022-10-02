@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Header from '../components/Header';
 
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -17,8 +16,9 @@ import * as Yup from 'yup';
 import Back from '../assets/back.png';
 
 import colors from '../utils/colors';
+import Header from '../components/Header';
 import AppText from '../components/AppText';
-import AppButton from '../components/AppButton';
+import LinearButton from '../components/LinearButton';
 import transferService from '../services/transferService';
 
 const TransferScreen = () => {
@@ -167,11 +167,9 @@ const TransferScreen = () => {
                 )}
               </View>
               <View style={styles.button}>
-                <AppButton
-                  onPress={handleSubmit}
-                  title="TRANSFER OWNERSHIP"
-                  text={styles.transferTxt}
-                  style={styles.appButtonTransfer}></AppButton>
+                <LinearButton
+                  text="TRANSFER OWNERSHIP"
+                  onPress={handleSubmit}></LinearButton>
               </View>
             </View>
           )}
@@ -221,21 +219,6 @@ const styles = StyleSheet.create({
     height: 56,
     borderRadius: 7,
     marginVertical: 10,
-  },
-  appButtonTransfer: {
-    backgroundColor: '#D7A241',
-    borderColor: '#FBCE71',
-    borderWidth: 1,
-    borderRadius: 7,
-    height: 51,
-    justifyContent: 'center',
-  },
-  transferTxt: {
-    color: 'black',
-    fontSize: 16,
-    textAlign: 'center',
-    fontWeight: '400',
-    lineHeight: 24,
   },
 
   button: {

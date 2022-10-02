@@ -2,23 +2,22 @@ import {
   FlatList,
   Image,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {getPostService} from '../services/postService';
 
-import Header from '../components/Header';
 import Logo from '../assets/SignetTagsLogo.png';
 import Add from '../assets/add.png';
-import Sample from '../assets/sample.png';
 import Profile from '../assets/profile.png';
 import Like from '../assets/like.png';
 import Comment from '../assets/Comments.png';
+
 import AppText from '../components/AppText';
+import Header from '../components/Header';
 import colors from '../utils/colors';
-import {useNavigation} from '@react-navigation/native';
-import {getPostService} from '../services/postService';
 
 const CommunityScreen = () => {
   const {navigate} = useNavigation();
@@ -89,6 +88,7 @@ const CommunityScreen = () => {
           <AppText>ADD POST</AppText>
         </TouchableOpacity>
       </Header>
+
       <View style={styles.boxContainer}>
         <FlatList
           data={datas}
@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.appBackground,
     alignItems: 'center',
+    paddingBottom: 80,
   },
   add: {
     justifyContent: 'center',

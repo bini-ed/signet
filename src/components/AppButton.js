@@ -4,7 +4,7 @@ import React from 'react';
 const AppButton = ({title, text, style, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
-      <Text style={text}>{title}</Text>
+      <Text style={[text, {fontFamily: 'Poppins-Regular'}]}>{title}</Text>
     </TouchableOpacity>
   );
 };

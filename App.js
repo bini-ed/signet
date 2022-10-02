@@ -22,6 +22,7 @@ import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 import EditProfile from './src/screens/EditProfile';
 import colors from './src/utils/colors';
 import RefernceScreen from './src/screens/RefernceScreen';
+import LandingPage from './src/screens/LandingPage';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';

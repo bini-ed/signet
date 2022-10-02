@@ -12,16 +12,16 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {launchImageLibrary} from 'react-native-image-picker';
+
+import Back from '../assets/back.png';
 
 import Header from '../components/Header';
 import AppText from '../components/AppText';
-
-import Back from '../assets/back.png';
-import colors from '../utils/colors';
 import AppButton from '../components/AppButton';
-import {launchImageLibrary} from 'react-native-image-picker';
+import LinearButton from '../components/LinearButton';
 import {addPostService} from '../services/postService';
-import axios from 'axios';
+import colors from '../utils/colors';
 
 const {width, height} = Dimensions.get('screen');
 
@@ -160,11 +160,7 @@ const AddPost = () => {
               color={colors.button}></ActivityIndicator>
           )}
           <View style={styles.button}>
-            <AppButton
-              onPress={handleSubmit}
-              title="POST NOW"
-              text={styles.postTxt}
-              style={styles.appButtonPost}></AppButton>
+            <LinearButton text="POST NOW" onPress={handleSubmit}></LinearButton>
           </View>
         </View>
       </View>
@@ -230,22 +226,6 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     textAlign: 'center',
   },
-  appButtonPost: {
-    backgroundColor: '#D7A241',
-    borderColor: '#FBCE71',
-    borderWidth: 1,
-    borderRadius: 7,
-    height: 51,
-    justifyContent: 'center',
-  },
-  postTxt: {
-    color: 'black',
-    fontSize: 16,
-    textAlign: 'center',
-    fontWeight: '400',
-    lineHeight: 24,
-  },
-
   button: {
     width: '100%',
     alignItems: 'center',
