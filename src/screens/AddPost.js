@@ -20,8 +20,9 @@ import Header from '../components/Header';
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
 import LinearButton from '../components/LinearButton';
-import {addPostService} from '../services/postService';
+import {addPostService, uploadImage} from '../services/postService';
 import colors from '../utils/colors';
+import RNFetchBlob from 'rn-fetch-blob';
 
 const {width, height} = Dimensions.get('screen');
 
@@ -57,6 +58,27 @@ const AddPost = () => {
     });
   };
 
+  const handleImageUpload = async () => {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append('image', {
+      name: image.fileName,
+      type: image.type,
+      uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
+    });
+    console.log(image);
+
+    try {
+      const {data} = await uploadImage(formData);
+      if (data) console.log(data);
+    } catch (error) {
+      error.response
+        ? console.log('respone', JSON.stringify(error.response.data, null, 2))
+        : console.log(JSON.stringify(error.message, null, 2));
+    }
+    setLoading(false);
+  };
+
   const handleSubmit = async () => {
     setLoading(true);
     setErrorMessage('');
@@ -70,12 +92,73 @@ const AddPost = () => {
           Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
       };
       try {
-        const {data} = await addPostService(caption, image.uri);
-        if (data) {
-          console.log('Success', data);
-          setImage('');
-          setCaption('');
-        }
+        // handleImageUpload(images);
+        const formData = new FormData();
+        formData.append('file', {
+          name: image.fileName,
+          type: image.type,
+          uri:
+            Platform.OS === 'ios'
+              ? image.uri.replace('file://', '')
+              : image.uri,
+        });
+        // RNFetchBlob.fetch(
+        //   'POST',
+        //   'https://api.eazynft.co/api/v1/general/uploadImage',
+        //   {
+        //     'Content-Type': 'multipart/form-data',
+        //   },
+        //   [
+        //     // element with property `filename` will be transformed into `file` in form data
+        //     {name: 'image', filename: image.fileName, data: image.uri},
+        //   ],
+        // )
+        //   .then(res => {
+        //     let status = res.info().status;
+
+        //     console.log('res', JSON.stringify(res, null, 2));
+        //   })
+        //   // Something went wrong:
+        //   .catch(error => {
+        //     if (error.response) {
+        //       console.log('error response', error.response.data);
+        //     } else {
+        //       console.log('Error Message', error.message);
+        //     }
+        //   });
+
+        RNFetchBlob.fetch(
+          'POST',
+          'https://api.eazynft.co/api/v1/general/uploadImage',
+          {
+            'Content-Type': 'multipart/form-data',
+          },
+          [
+            // element with property `filename` will be transformed into `file` in form data
+            {name: 'image', filename: image.fileName, data: image.uri},
+          ],
+        ).then(resp => {
+          console.log('ressss', JSON.stringify(resp, null, 2));
+          // console.log('your image uploaded successfully');
+        });
+
+        // try {
+        //   const {data} = await uploadImage(formData);
+        //   if (data) console.log(data);
+        // } catch (error) {
+        //   error.response
+        //     ? console.log(
+        //         'respone',
+        //         JSON.stringify(error.response.data, null, 2),
+        //       )
+        //     : console.log(JSON.stringify(error.message, null, 2));
+        // }
+        // const {data} = await addPostService(caption, image.uri);
+        // if (data) {
+        //   console.log('Success', data);
+        //   setImage('');
+        //   setCaption('');
+        // }
       } catch (error) {
         if (error.response) {
           console.log('error response', error.response.data);

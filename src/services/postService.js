@@ -8,8 +8,21 @@ const addPostService = async (caption, image) => {
     assetURL: image,
   });
 };
+const uploadImage = async image => {
+  return await axios.post(
+    `${API_URL}general/uploadImage`,
+    {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    },
+    {
+      image,
+    },
+  );
+};
 const getPostService = async () => {
   return await axios.get(`${API_URL}posts/allPosts`);
 };
 
-export {addPostService, getPostService};
+export {addPostService, getPostService, uploadImage};

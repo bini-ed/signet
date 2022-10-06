@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Dimensions,
   Image,
   ScrollView,
@@ -7,7 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
 import Profile from '../assets/profile.png';
@@ -18,6 +19,7 @@ import colors from '../utils/colors';
 import AppText from '../components/AppText';
 import AppButton from '../components/AppButton';
 import Header from '../components/Header';
+import {getPostService} from '../services/postService';
 
 const {width} = Dimensions.get('screen');
 const ProfileScreen = () => {
@@ -25,7 +27,35 @@ const ProfileScreen = () => {
   const [hide, setHide] = useState(false);
   const [list, setList] = useState(false);
 
-  const length = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const [post, setPost] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getPost();
+    return () => {};
+  }, []);
+
+  const getPost = async () => {
+    try {
+      setLoading(true);
+      const {data} = await getPostService();
+      if (data) {
+        const myPost = data.data.filter(
+          post => post.postedBy._id == '63352dda6a0c5c489dd53dbc',
+        );
+        myPost ? setPost(myPost) : null;
+      }
+      setLoading(false);
+    } catch (error) {
+      if (error.response) {
+        console.log('error response', error.response.data.msg);
+      } else {
+        console.log('Error Message', error.message);
+      }
+      setLoading(false);
+    }
+  };
+
   const toggleSwitchHide = () => setHide(previousState => !previousState);
   const toggleSwitchList = () => setList(previousState => !previousState);
 
@@ -71,14 +101,24 @@ const ProfileScreen = () => {
       </View>
 
       <AppText style={styles.txt}>YOUR POSTS</AppText>
-
-      <View style={styles.postContainer}>
-        {length.map((item, index) => (
-          <View key={index} style={styles.post}>
-            <Image source={Post} style={{width: width / 2 - 30}}></Image>
-          </View>
-        ))}
-      </View>
+      {loading ? (
+        <ActivityIndicator
+          animating={loading}
+          color={colors.button}
+          size={30}></ActivityIndicator>
+      ) : (
+        <View style={styles.postContainer}>
+          {post.length ? (
+            post.map((item, index) => (
+              <View key={index} style={styles.post}>
+                <Image source={Post} style={{width: width / 2 - 30}}></Image>
+              </View>
+            ))
+          ) : (
+            <AppText style={styles.postText}>No Post</AppText>
+          )}
+        </View>
+      )}
     </ScrollView>
   );
 };
@@ -148,5 +188,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+  },
+  postText: {
+    color: 'white',
+    textAlign: 'center',
+    width: '100%',
+    marginVertical: 10,
   },
 });

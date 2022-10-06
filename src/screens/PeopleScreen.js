@@ -1,12 +1,14 @@
 import {
+  ActivityIndicator,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
 import Logo from '../assets/SignetTagsLogo.png';
@@ -15,27 +17,71 @@ import Woman from '../assets/woman.png';
 import AppText from '../components/AppText';
 import Header from '../components/Header';
 import colors from '../utils/colors';
+import {getAllUserService} from '../services/userService';
 
 const PeopleScreen = () => {
   const {navigate} = useNavigation();
+  const [people, setPeople] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getAllUser();
+    return () => {};
+  }, []);
+
+  const getAllUser = async () => {
+    setLoading(true);
+    try {
+      const {data} = await getAllUserService();
+      setPeople(data.data);
+    } catch (error) {
+      if (error.response) {
+        console.log('error response', error.response.data);
+      } else {
+        console.log('Error Message', error.message);
+      }
+    }
+    setLoading(false);
+  };
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <Header>
         <View></View>
         <Image source={Logo}></Image>
         <View></View>
       </Header>
-      <TextInput
-        style={styles.textInput}
-        placeholder="Search People"></TextInput>
-      <View style={styles.assetContainer}>
-        <AppText style={styles.text}>ASSET OWNER</AppText>
-        <TouchableOpacity
-          onPress={() => navigate('PeopleDetail', {name: 'bugulu'})}>
-          <Image source={Woman}></Image>
-        </TouchableOpacity>
-      </View>
-    </View>
+      {loading ? (
+        <ActivityIndicator
+          animating={loading}
+          color={colors.button}
+          size={30}></ActivityIndicator>
+      ) : (
+        <>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Search People"></TextInput>
+          <View style={styles.assetContainer}>
+            <AppText style={styles.text}>ASSET OWNER</AppText>
+            <View
+              style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
+              }}>
+              {people.map((peoples, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={{marginVertical: 10}}
+                  onPress={() => navigate('PeopleDetail', {person: peoples})}>
+                  <Image source={Woman}></Image>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        </>
+      )}
+    </ScrollView>
   );
 };
 

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import moment from 'moment';
 
 import Back from '../assets/back.png';
 import Profile from '../assets/woman.png';
@@ -21,9 +22,11 @@ const {width} = Dimensions.get('screen');
 const PeopleDetailScreen = () => {
   const navigate = useNavigation();
   const route = useRoute();
-  const title = route.params.name;
-
+  const person = route.params.person;
   const length = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+  const registeredDate = person.registeredOn.split('T')[0];
+  const lastAccessDate = person.lastAccess.split('T')[0];
 
   return (
     <ScrollView
@@ -34,7 +37,7 @@ const PeopleDetailScreen = () => {
         <TouchableOpacity onPress={() => navigate.goBack()}>
           <Image source={Back}></Image>
         </TouchableOpacity>
-        <AppText style={styles.title}>{title}</AppText>
+        <AppText style={styles.title}>{person.name}</AppText>
         <View></View>
       </Header>
       <View
@@ -46,29 +49,32 @@ const PeopleDetailScreen = () => {
         <Image source={Profile} style={{alignSelf: 'center'}}></Image>
         <AppText style={styles.text}>ABOUT</AppText>
         <AppText style={[styles.text, {color: 'white'}]}>
-          The photographs describes the fight of young souls seeking escape from
-          old rituals in order to build their own story and future.
+          {person.about}
         </AppText>
 
         <View style={styles.box}>
           <View style={styles.infoLabel}>
             <AppText style={styles.infoTxt}>EMAIl</AppText>
-            <AppText style={styles.txt}>Someone@gmail.com</AppText>
+            <AppText style={styles.txt}>{person.email ?? ''}</AppText>
           </View>
 
           <View style={styles.infoLabel}>
             <AppText style={styles.infoTxt}>ADDRESS</AppText>
-            <AppText style={styles.txt}>ABC Colony</AppText>
+            <AppText style={styles.txt}>{person.address ?? ''}</AppText>
           </View>
 
           <View style={styles.infoLabel}>
             <AppText style={styles.infoTxt}>PURCHASED ON</AppText>
-            <AppText style={styles.txt}>02 Apr 2022</AppText>
+            <AppText style={styles.txt}>
+              {moment(registeredDate).format('DD MMM YYYY')}
+            </AppText>
           </View>
 
           <View style={styles.infoLabel}>
             <AppText style={styles.infoTxt}>LAST ACTIVE</AppText>
-            <AppText style={styles.txt}>01 Apr 2022</AppText>
+            <AppText style={styles.txt}>
+              {moment(lastAccessDate).format('DD MMM YYYY')}
+            </AppText>
           </View>
         </View>
 

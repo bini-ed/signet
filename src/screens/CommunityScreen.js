@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   StyleSheet,
@@ -18,6 +19,9 @@ import Comment from '../assets/Comments.png';
 import AppText from '../components/AppText';
 import Header from '../components/Header';
 import colors from '../utils/colors';
+import {getLike} from '../services/likeService/getLikeService';
+import {getCommentsService} from '../services/commentService';
+import {addLikeService, getLikeService} from '../services/likeService';
 
 const CommunityScreen = () => {
   const {navigate} = useNavigation();
@@ -31,24 +35,37 @@ const CommunityScreen = () => {
 
   useEffect(() => {
     getPost();
-    return () => {};
   }, []);
 
   const getPost = async () => {
     setLoading(true);
     try {
       const {data} = await getPostService();
-      if (data) {
-        setData(data.data);
-        // console.log('data', JSON.stringify(data.data, null, 2));
+      if (data?.data) {
+        const newData = [];
+        try {
+          await Promise.all(
+            data.data.map(async item => {
+              const response = await getLikeService(item._id);
+              const comment = await getCommentsService(item._id);
+              item.like = response.data.data;
+              item.comment = comment.data;
+              // console.log('data', JSON.stringify(response.data.data, null, 2));
+              newData.push(item);
+            }),
+          );
+
+          setData(newData);
+        } catch (error) {
+          if (error.response) {
+            console.log('error response', error.response.data.msg);
+          } else {
+            console.log('Error Message', error.message);
+          }
+        }
+      } else {
       }
     } catch (error) {
-      // console.log(
-      //   error.reponse && error.reponse.data
-      //     ? error.reponse.data
-      //     : error.message,
-      // );
-
       if (error.response) {
         console.log('error response', error.response.data.msg);
       } else {
@@ -57,22 +74,36 @@ const CommunityScreen = () => {
     }
     setLoading(false);
   };
-  // console.log(loading ? 'Loading...' : JSON.stringify(datas, null, 2));
+  // console.log('data', JSON.stringify(datas, null, 2));
 
   const calculateDate = date => {
     let ms = new Date(Date.parse('2012-01-26T13:51:50-07:00'));
-    // const date = new Date(Date.now());
+  };
+  const callLikeApi = async id => {
+    setLoading(true);
+    try {
+      const {data} = await addLikeService(id);
+      if (data) {
+        console.log('dada', data);
+        return getPost();
+      }
+    } catch (error) {
+      error.response
+        ? console.log(error.response.data)
+        : console.log(error.message);
+      setLoading(false);
+    }
+  };
 
-    // const diffTime = Math.abs(date - ms);
-    // const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    // const change = date - ms;
-    // console.log(new Date(change));
-    // console.log(ms);
-
-    const dataaa = new Date(date).toUTCString();
-    // console.log(date);
-    console.log(dataaa);
+  const handleLike = async id => {
+    const post = datas.filter(item => item._id == id);
+    const found = post[0].like.find(likes => {
+      likes.likedBy[0]._id == '63352ddaf6989d2nue5qkrut';
+    });
+    if (found?._id != undefined) console.log('You have already liked');
+    else {
+      callLikeApi(id);
+    }
   };
 
   return (
@@ -90,12 +121,18 @@ const CommunityScreen = () => {
       </Header>
 
       <View style={styles.boxContainer}>
+        {loading && (
+          <ActivityIndicator
+            animating={loading}
+            size={30}
+            color={colors.button}></ActivityIndicator>
+        )}
         <FlatList
           data={datas}
           showsVerticalScrollIndicator={false}
           renderItem={({item}) => (
             <View style={styles.postContainer}>
-              {/* {console.log(JSON.stringify(item, null, 2))} */}
+              {/* {console.log('dddd', JSON.stringify(item, null, 2))} */}
               <View style={styles.name}>
                 <View style={styles.profile}>
                   <Image style={{marginRight: 5}} source={Profile}></Image>
@@ -111,12 +148,32 @@ const CommunityScreen = () => {
 
               <View style={styles.status}>
                 <View>
-                  <Image source={Like}></Image>
-                  <AppText style={styles.text}>15 Likes</AppText>
+                  {item.like.length ? (
+                    <TouchableOpacity onPress={() => handleLike(item._id)}>
+                      <Image source={Like}></Image>
+                      <AppText style={styles.text}>{item.like.length}</AppText>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={() => handleLike(item._id)}>
+                      <Image source={Like}></Image>
+                      <AppText style={styles.text}>No Likes</AppText>
+                    </TouchableOpacity>
+                  )}
                 </View>
                 <View style={styles.comment}>
-                  <Image source={Comment}></Image>
-                  <AppText style={styles.text}>16 Comments </AppText>
+                  {item.comment.data.length ? (
+                    <>
+                      <Image source={Comment}></Image>
+                      <AppText style={styles.text}>
+                        {item.comment.data.length}
+                      </AppText>
+                    </>
+                  ) : (
+                    <>
+                      <Image source={Comment}></Image>
+                      <AppText style={styles.text}>No comment</AppText>
+                    </>
+                  )}
                 </View>
               </View>
             </View>
