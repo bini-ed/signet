@@ -52,6 +52,7 @@ const BottomTabNavigation = () => {
       <Bottom.Screen
         name="CommunityNav"
         options={{
+          title: 'Community',
           headerShown: false,
           tabBarIcon: ({color, size}) => (
             <Image style={{width: 25, height: 25}} source={Community}></Image>

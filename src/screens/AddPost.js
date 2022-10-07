@@ -23,6 +23,8 @@ import LinearButton from '../components/LinearButton';
 import {addPostService, uploadImage} from '../services/postService';
 import colors from '../utils/colors';
 import RNFetchBlob from 'rn-fetch-blob';
+import axios from 'axios';
+import API_URL from '../constants/API_URL';
 
 const {width, height} = Dimensions.get('screen');
 
@@ -32,6 +34,7 @@ const AddPost = () => {
   const [caption, setCaption] = useState('');
   const [error, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [imgLoading, setImageLoading] = useState(false);
 
   const imageGalleryLaunch = () => {
     let options = {
@@ -59,24 +62,35 @@ const AddPost = () => {
   };
 
   const handleImageUpload = async () => {
-    setLoading(true);
+    setImageLoading(true);
     const formData = new FormData();
     formData.append('image', {
       name: image.fileName,
       type: image.type,
       uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
     });
-    console.log(image);
 
     try {
-      const {data} = await uploadImage(formData);
-      if (data) console.log(data);
+      // const {data} = await uploadImage(formData);
+      const {data} = await axios.post(
+        `${API_URL}general/uploadImage`,
+        {
+          header: {
+            'content-type': 'multipart/form-data',
+          },
+        },
+        formData,
+      );
+      if (data) console.log('data returned', JSON.stringify(data, null, 2));
     } catch (error) {
       error.response
-        ? console.log('respone', JSON.stringify(error.response.data, null, 2))
-        : console.log(JSON.stringify(error.message, null, 2));
+        ? console.log(
+            'error respone',
+            JSON.stringify(error.response.data, null, 2),
+          )
+        : console.log('msg', JSON.stringify(error.message, null, 2));
     }
-    setLoading(false);
+    setImageLoading(false);
   };
 
   const handleSubmit = async () => {
@@ -92,16 +106,7 @@ const AddPost = () => {
           Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
       };
       try {
-        // handleImageUpload(images);
-        const formData = new FormData();
-        formData.append('file', {
-          name: image.fileName,
-          type: image.type,
-          uri:
-            Platform.OS === 'ios'
-              ? image.uri.replace('file://', '')
-              : image.uri,
-        });
+        handleImageUpload();
         // RNFetchBlob.fetch(
         //   'POST',
         //   'https://api.eazynft.co/api/v1/general/uploadImage',
@@ -127,20 +132,20 @@ const AddPost = () => {
         //     }
         //   });
 
-        RNFetchBlob.fetch(
-          'POST',
-          'https://api.eazynft.co/api/v1/general/uploadImage',
-          {
-            'Content-Type': 'multipart/form-data',
-          },
-          [
-            // element with property `filename` will be transformed into `file` in form data
-            {name: 'image', filename: image.fileName, data: image.uri},
-          ],
-        ).then(resp => {
-          console.log('ressss', JSON.stringify(resp, null, 2));
-          // console.log('your image uploaded successfully');
-        });
+        // RNFetchBlob.fetch(
+        //   'POST',
+        //   'https://api.eazynft.co/api/v1/general/uploadImage',
+        //   {
+        //     'Content-Type': 'multipart/form-data',
+        //   },
+        //   [
+        //     // element with property `filename` will be transformed into `file` in form data
+        //     {name: 'image', filename: image.fileName, data: image.uri},
+        //   ],
+        // ).then(resp => {
+        //   console.log('ressss', JSON.stringify(resp, null, 2));
+        //   // console.log('your image uploaded successfully');
+        // });
 
         // try {
         //   const {data} = await uploadImage(formData);
@@ -197,6 +202,15 @@ const AddPost = () => {
             width: '100%',
             justifyContent: 'space-between',
           }}>
+          {imgLoading && (
+            <>
+              <ActivityIndicator
+                animating={loading}
+                size={30}
+                color={colors.button}></ActivityIndicator>
+              <AppText style={{color: 'white'}}>Loading</AppText>
+            </>
+          )}
           <View style={{width: '100%'}}>
             <View style={styles.addPost}>
               {image.uri ? (

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import moment from 'moment';
 
@@ -17,6 +17,7 @@ import Post from '../assets/post.png';
 import colors from '../utils/colors';
 import Header from '../components/Header';
 import AppText from '../components/AppText';
+import {getPostService} from '../services/postService';
 
 const {width} = Dimensions.get('screen');
 const PeopleDetailScreen = () => {
@@ -27,6 +28,35 @@ const PeopleDetailScreen = () => {
 
   const registeredDate = person.registeredOn.split('T')[0];
   const lastAccessDate = person.lastAccess.split('T')[0];
+
+  const [post, setPost] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getPost();
+    return () => {};
+  }, []);
+
+  const getPost = async () => {
+    try {
+      setLoading(true);
+      const {data} = await getPostService();
+      if (data) {
+        const myPost = data.data.filter(
+          post => post.postedBy._id == person._id,
+        );
+        myPost ? setPost(myPost) : null;
+      }
+      setLoading(false);
+    } catch (error) {
+      if (error.response) {
+        console.log('error response', error.response.data.msg);
+      } else {
+        console.log('Error Message', error.message);
+      }
+      setLoading(false);
+    }
+  };
 
   return (
     <ScrollView
@@ -80,11 +110,15 @@ const PeopleDetailScreen = () => {
 
         <AppText style={styles.text}>POSTS</AppText>
         <View style={styles.postContainer}>
-          {length.map((item, index) => (
-            <View key={index} style={styles.post}>
-              <Image source={Post} style={{width: width / 2 - 30}}></Image>
-            </View>
-          ))}
+          {post ? (
+            post.map((item, index) => (
+              <View key={index} style={styles.post}>
+                <Image source={Post} style={{width: width / 2 - 30}}></Image>
+              </View>
+            ))
+          ) : (
+            <AppText style={{color: ''}}>No Post made yet</AppText>
+          )}
         </View>
       </View>
     </ScrollView>

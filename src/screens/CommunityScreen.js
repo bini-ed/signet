@@ -1,37 +1,47 @@
 import {
   ActivityIndicator,
+  Dimensions,
   FlatList,
   Image,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {getPostService} from '../services/postService';
+import moment from 'moment';
+import Video from 'react-native-video';
 
 import Logo from '../assets/SignetTagsLogo.png';
 import Add from '../assets/add.png';
 import Profile from '../assets/profile.png';
 import Like from '../assets/like.png';
 import Comment from '../assets/Comments.png';
+import Kass from '../assets/Video/kass.mp4';
 
 import AppText from '../components/AppText';
 import Header from '../components/Header';
 import colors from '../utils/colors';
-import {getLike} from '../services/likeService/getLikeService';
+
 import {getCommentsService} from '../services/commentService';
 import {addLikeService, getLikeService} from '../services/likeService';
+import {getLike} from '../services/likeService/getLikeService';
+import {getPostService} from '../services/postService';
+import AppVideo from '../components/AppVideo';
+import VideoPlayer from 'react-native-video-player';
 
 const CommunityScreen = () => {
   const {navigate} = useNavigation();
   const data = [
     {id: 1, name: 'Manshi Guatm', last: 1},
     {id: 2, name: 'Manshi Guatm', last: 2},
+    {id: 3, name: 'Manshi Guatm', last: 2},
+    {id: 4, name: 'Manshi Guatm', last: 2},
   ];
 
   const [loading, setLoading] = useState(false);
   const [datas, setData] = useState([]);
+  const [currentVisibleIndex, setCurrentVisibleIndex] = useState();
 
   useEffect(() => {
     getPost();
@@ -42,6 +52,7 @@ const CommunityScreen = () => {
     try {
       const {data} = await getPostService();
       if (data?.data) {
+        // console.log(JSON.stringify(data.data, null, 2));
         const newData = [];
         try {
           await Promise.all(
@@ -76,9 +87,6 @@ const CommunityScreen = () => {
   };
   // console.log('data', JSON.stringify(datas, null, 2));
 
-  const calculateDate = date => {
-    let ms = new Date(Date.parse('2012-01-26T13:51:50-07:00'));
-  };
   const callLikeApi = async id => {
     setLoading(true);
     try {
@@ -105,7 +113,11 @@ const CommunityScreen = () => {
       callLikeApi(id);
     }
   };
+  const onViewableItemsChanged = ({viewableItems, changed}) => {
+    setCurrentVisibleIndex(viewableItems[0].index);
+  };
 
+  const viewabilityConfigCallbackPairs = useRef([{onViewableItemsChanged}]);
   return (
     <View style={styles.container}>
       <Header>
@@ -127,12 +139,21 @@ const CommunityScreen = () => {
             size={30}
             color={colors.button}></ActivityIndicator>
         )}
+
         <FlatList
           data={datas}
           showsVerticalScrollIndicator={false}
-          renderItem={({item}) => (
+          initialNumToRender={5}
+          viewabilityConfigCallbackPairs={
+            viewabilityConfigCallbackPairs.current
+          }
+          renderItem={({item, index}) => (
             <View style={styles.postContainer}>
-              {/* {console.log('dddd', JSON.stringify(item, null, 2))} */}
+              {/* {console.log(
+                'dddd',
+                JSON.stringify(item.assetURL.split('.', -1), null, 2),
+              )} */}
+
               <View style={styles.name}>
                 <View style={styles.profile}>
                   <Image style={{marginRight: 5}} source={Profile}></Image>
@@ -141,10 +162,22 @@ const CommunityScreen = () => {
                   </AppText>
                 </View>
                 <AppText style={styles.text}>
-                  {calculateDate(item.postedDate)} DAY AGO
+                  {/* {moment(item.postedDate).format('DD')} DAY AGO */}
                 </AppText>
               </View>
-              <Image source={{uri: item.assetURL}}></Image>
+              {item.assetURL.endsWith('mp4') ? (
+                <AppVideo
+                  currentIndex={index}
+                  currentVisibleIndex={currentVisibleIndex}
+                  video={{uri: item.assetURL}}></AppVideo>
+              ) : (
+                <Image
+                  source={{uri: item.assetURL}}
+                  style={{
+                    width: '100%',
+                    height: 400,
+                  }}></Image>
+              )}
 
               <View style={styles.status}>
                 <View>
@@ -212,6 +245,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginVertical: 15,
     borderRadius: 7,
+    // height: 350,
   },
   name: {
     flexDirection: 'row',
@@ -223,7 +257,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 21,
-    marginVertical: 10,
+    marginTop: 20,
   },
   comment: {
     justifyContent: 'flex-end',

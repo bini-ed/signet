@@ -72,9 +72,12 @@ const PeopleScreen = () => {
               {people.map((peoples, index) => (
                 <TouchableOpacity
                   key={index}
-                  style={{marginVertical: 10}}
+                  style={styles.person}
                   onPress={() => navigate('PeopleDetail', {person: peoples})}>
                   <Image source={Woman}></Image>
+                  <AppText style={{color: colors.button}}>
+                    {peoples.name}
+                  </AppText>
                 </TouchableOpacity>
               ))}
             </View>
@@ -106,5 +109,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '400',
     lineHeight: 24,
+  },
+  person: {
+    marginVertical: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
